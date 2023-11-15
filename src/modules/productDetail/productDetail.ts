@@ -4,6 +4,7 @@ import { formatPrice } from '../../utils/helpers';
 import { ProductData } from 'types';
 import html from './productDetail.tpl.html';
 import { cartService } from '../../services/cart.service';
+import { fetchWithUserId } from '../../utils/fetchUserId';
 import { statisticsService } from '../../services/statistics.service';
 
 class ProductDetail extends Component {
@@ -21,7 +22,7 @@ class ProductDetail extends Component {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = Number(urlParams.get('id'));
 
-    const productResp = await fetch(`/api/getProduct?id=${productId}`);
+    const productResp = await fetchWithUserId(`/api/getProduct?id=${productId}`);
     this.product = await productResp.json();
 
     if (!this.product) return;
@@ -41,7 +42,7 @@ class ProductDetail extends Component {
 
     if (isInCart) this._setInCart();
 
-    fetch(`/api/getProductSecretKey?id=${id}`)
+    fetchWithUserId(`/api/getProductSecretKey?id=${id}`)
       .then((res) => res.json())
       .then((secretKey) => {
         this.view.secretKey.setAttribute('content', secretKey);
@@ -49,7 +50,7 @@ class ProductDetail extends Component {
         statisticsService.send(type, { ...this.product, secretKey });
       });
 
-    fetch('/api/getPopularProducts')
+      fetchWithUserId('/api/getPopularProducts')
       .then((res) => res.json())
       .then((products) => {
         this.more.update(products);
