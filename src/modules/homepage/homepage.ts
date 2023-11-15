@@ -4,6 +4,8 @@ import html from './homepage.tpl.html';
 
 import { ProductList } from '../productList/productList';
 import searchSuggestionsComp from '../searchSuggestions/searchSuggestions';
+import { fetchWithUserId } from '../../utils/fetchUserId';
+
 
 class Homepage extends Component {
   popularProducts: ProductList;
@@ -19,7 +21,7 @@ class Homepage extends Component {
   }
 
   render() {
-    fetch('/api/getPopularProducts')
+    fetchWithUserId('/api/getPopularProducts')
       .then((res) => res.json())
       .then((products) => {
         this.popularProducts.update(products);
