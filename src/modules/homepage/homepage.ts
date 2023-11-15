@@ -3,13 +3,18 @@ import { Component } from '../component';
 import html from './homepage.tpl.html';
 
 import { ProductList } from '../productList/productList';
+import searchSuggestionsComp from '../searchSuggestions/searchSuggestions';
 import { fetchWithUserId } from '../../utils/fetchUserId';
+
 
 class Homepage extends Component {
   popularProducts: ProductList;
 
   constructor(props: any) {
     super(props);
+
+    searchSuggestionsComp.attach(this.view.search);
+    searchSuggestionsComp.render()
 
     this.popularProducts = new ProductList();
     this.popularProducts.attach(this.view.popular);
